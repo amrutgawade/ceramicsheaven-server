@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerServiceImp implements CustomerService{
+public class CustomerServiceImp implements com.ceramicsheaven.services.CustomerService {
 
     private CustomerRepository customerRepository;
     @Autowired

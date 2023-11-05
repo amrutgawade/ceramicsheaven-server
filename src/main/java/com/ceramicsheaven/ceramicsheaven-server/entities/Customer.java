@@ -16,19 +16,16 @@ public class Customer {
     private String email;
     private String mobile;
     private String password;
-    private String confirmPassword;
-
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String gender, String email, String mobile, String password, String confirmPassword) {
+    public Customer(String firstName, String lastName, String gender, String email, String mobile, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.email = email;
         this.mobile = mobile;
         this.password = password;
-        this.confirmPassword = confirmPassword;
     }
 
     public String getFirstName() {
@@ -79,14 +76,6 @@ public class Customer {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -96,7 +85,6 @@ public class Customer {
                 ", email='" + email + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", password='" + password + '\'' +
-                ", confirmPassword='" + confirmPassword + '\'' +
                 '}';
     }
 }
