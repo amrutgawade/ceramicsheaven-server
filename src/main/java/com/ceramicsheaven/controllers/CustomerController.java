@@ -1,5 +1,6 @@
 package com.ceramicsheaven.controllers;
 
+import com.ceramicsheaven.entities.LoginDTO;
 import com.ceramicsheaven.services.CustomerService;
 import com.ceramicsheaven.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,10 @@ public class CustomerController {
     @PostMapping("/register")
     public Customer register(@RequestBody Customer customer){
         return customerService.register(customer);
+    }
+
+    @PostMapping("/login")
+    public Customer login(@RequestBody LoginDTO loginDTO){
+        return customerService.login(loginDTO);
     }
 }
