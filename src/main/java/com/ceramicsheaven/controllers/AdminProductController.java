@@ -50,14 +50,6 @@ public class AdminProductController {
 	}
 
 
-	@GetMapping("/all")
-//	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	public ResponseEntity<List<Product>> findAllProducts()throws ProductException{
-		List<Product> products = productService.findAllProducts();
-		return new ResponseEntity<>(products,HttpStatus.OK);
-	}
-
-
 	@PutMapping("{productId}/product")
 	public ResponseEntity<Product> updateProduct(@PathVariable Long productId,@RequestBody Product req) throws ProductException{
 		Product product = productService.updateProduct(productId, req);

@@ -40,11 +40,17 @@ public class ProductController {
 
 
 
-	@GetMapping("/products/id/{productId}")
+	@GetMapping("/products/{productId}")
 	public ResponseEntity<Product> findProductByIdHandler(@PathVariable Long productId)throws ProductException{
 		
 		Product product = productService.findProductById(productId);
 		
 		return new ResponseEntity<Product>(product,HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("/products/all")
+	public ResponseEntity<List<Product>> findAllProducts()throws ProductException{
+		List<Product> products = productService.findAllProducts();
+		return new ResponseEntity<>(products,HttpStatus.OK);
 	}
 }
