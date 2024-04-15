@@ -2,6 +2,8 @@ package com.ceramicsheaven.controllers;
 
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.requests.ForgotPasswordRequest;
+import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,4 +29,8 @@ public class UserController {
 		User updatedProfile = userService.updateUser(jwt,user);
 		return new ResponseEntity<User>(updatedProfile,HttpStatus.ACCEPTED);
 	}
+
+//	public ResponseEntity<ApiResponse> updatePassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest){
+//
+//	}
 }

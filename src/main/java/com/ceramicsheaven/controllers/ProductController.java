@@ -19,7 +19,7 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	@GetMapping("api/products")
+	@GetMapping("/products")
 	public ResponseEntity<Page<Product>> findProductByCategory(@RequestParam String category,
 															   @RequestParam List<String> color,
 															   @RequestParam List<String> size,
@@ -40,7 +40,7 @@ public class ProductController {
 
 
 
-	@GetMapping("api/products/{productId}")
+	@GetMapping("products/{productId}")
 	public ResponseEntity<Product> findProductByIdHandler(@PathVariable Long productId)throws ProductException{
 		
 		Product product = productService.findProductById(productId);
