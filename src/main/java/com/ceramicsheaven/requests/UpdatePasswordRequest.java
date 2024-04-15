@@ -1,27 +1,15 @@
 package com.ceramicsheaven.requests;
 
-public class ForgotPasswordRequest {
-
-    private String email;
+public class UpdatePasswordRequest {
     private String currentPassword;
     private String newPassword;
 
-    public ForgotPasswordRequest() {
+    public UpdatePasswordRequest() {
     }
-    public ForgotPasswordRequest(String email, String currentPassword, String newPassword) {
-        this.email = email;
+    public UpdatePasswordRequest(String currentPassword, String newPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getCurrentPassword() {
         return currentPassword;
     }

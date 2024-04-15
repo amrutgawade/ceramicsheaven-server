@@ -5,7 +5,9 @@ import com.ceramicsheaven.config.JwtProvider;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.repositories.UserRepository;
+import com.ceramicsheaven.requests.UpdatePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -61,6 +63,25 @@ public class UserServiceImplementation implements UserService{
 			existingUser.setRole(user.getRole());
 		}
 		return userRepository.save(existingUser);
+	}
+
+	@Override
+	public String updatePassword(String jwt,UpdatePasswordRequest updatePasswordRequest) throws UserException {
+		String email = jwtProvider.getEmailFromToken(jwt);
+		User existingUser = userRepository.findByEmail(email);
+
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+		if (encoder.matches(updatePasswordRequest.getCurrentPassword(), existingUser.getPassword())) {
+			String newPasswordHash = encoder.encode(updatePasswordRequest.getNewPassword());
+			existingUser.setPassword(newPasswordHash);
+			userRepository.save(existingUser);
+			return "Password updated successfully";
+		} else {
+			// Passwords don't match
+			return "Current password is not valid";
+		}
+
 	}
 
 }

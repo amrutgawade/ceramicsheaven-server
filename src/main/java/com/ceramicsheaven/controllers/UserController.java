@@ -2,7 +2,7 @@ package com.ceramicsheaven.controllers;
 
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.User;
-import com.ceramicsheaven.requests.ForgotPasswordRequest;
+import com.ceramicsheaven.requests.UpdatePasswordRequest;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,12 @@ public class UserController {
 		return new ResponseEntity<User>(updatedProfile,HttpStatus.ACCEPTED);
 	}
 
-//	public ResponseEntity<ApiResponse> updatePassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest){
-//
-//	}
+	@PostMapping("/profile/updatePassword")
+	public ResponseEntity<ApiResponse> updatePassword(@RequestHeader("Authorization") String jwt,@RequestBody UpdatePasswordRequest updatePasswordRequest) throws UserException {
+		String response =  userService.updatePassword(jwt,updatePasswordRequest);
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setMessage(response);
+		apiResponse.setStatus(true);
+		return  new ResponseEntity<>(apiResponse,HttpStatus.ACCEPTED);
+	}
 }
