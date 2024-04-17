@@ -35,10 +35,10 @@ public class CartController {
 	public ResponseEntity<ApiResponse> addItemToCart(@RequestBody AddItemRequest request, @RequestHeader("Authorization") String jwt)throws UserException , ProductException {
 		User user = userService.findUserProfileByJwt(jwt);
 		
-		cartService.addCartItem(user.getId(), request);
+		String res = cartService.addCartItem(user.getId(), request);
 		
 		ApiResponse response = new ApiResponse();
-		response.setMessage("Items added Successfully");
+		response.setMessage(res);
 		response.setStatus(true);
 		
 		return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);

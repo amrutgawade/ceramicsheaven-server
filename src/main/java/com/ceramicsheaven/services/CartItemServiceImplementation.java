@@ -28,9 +28,9 @@ public class CartItemServiceImplementation implements CartItemService{
 
 	@Override
 	public CartItems creaCartItems(CartItems cartItems) {
-		cartItems.setQuantity(1);
-		cartItems.setPrice(cartItems.getProduct().getPrice()*cartItems.getQuantity());
-		cartItems.setDiscountedPrice(cartItems.getProduct().getDiscountedPrice()*cartItems.getQuantity());
+//		cartItems.setQuantity(1);
+//		cartItems.setPrice(cartItems.getProduct().getPrice()*cartItems.getQuantity());
+//		cartItems.setDiscountedPrice(cartItems.getProduct().getDiscountedPrice()*cartItems.getQuantity());
 		
 		CartItems createdCartItem = cartItemRepository.save(cartItems);
 		

@@ -22,4 +22,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                         @Param("maxPrice") Integer maxPrice,
                                         @Param("minDiscount") Integer minDiscount,
                                         @Param("sort") String sort);
+
+
 }
