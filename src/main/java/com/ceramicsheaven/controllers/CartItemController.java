@@ -34,11 +34,24 @@ public class CartItemController {
 
         return new ResponseEntity<ApiResponse>(response, HttpStatus.OK);
     }
-    @PutMapping("/update/{cartItemId}/{quantity}")
-    public ResponseEntity<ApiResponse> UpdateItemToCart(@PathVariable Long cartItemId,@PathVariable Integer quantity, @RequestHeader("Authorization") String jwt) throws UserException, ProductException, CartItemException {
+    @PutMapping("/increment/{cartItemId}")
+    public ResponseEntity<ApiResponse> incrementQuantity(@PathVariable Long cartItemId, @RequestHeader("Authorization") String jwt) throws UserException, ProductException, CartItemException {
         userService.findUserProfileByJwt(jwt);
 
-        String res = cartItemService.updateCartItems(cartItemId,quantity);
+        String res = cartItemService.incrementQuantity(cartItemId);
+
+        ApiResponse response = new ApiResponse();
+        response.setMessage(res);
+        response.setStatus(true);
+
+        return new ResponseEntity<ApiResponse>(response,HttpStatus.OK);
+    }
+
+    @PutMapping("/decrement/{cartItemId}")
+    public ResponseEntity<ApiResponse> decrementQuantity(@PathVariable Long cartItemId, @RequestHeader("Authorization") String jwt) throws UserException, ProductException, CartItemException {
+        userService.findUserProfileByJwt(jwt);
+
+        String res = cartItemService.decrementQuantity(cartItemId);
 
         ApiResponse response = new ApiResponse();
         response.setMessage(res);

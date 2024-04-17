@@ -11,7 +11,10 @@ public interface CartItemService {
 
 	public CartItems creaCartItems(CartItems cartItems);
 	
-	public String updateCartItems(Long cartItemId,Integer quantity)throws CartItemException;
+//	public String updateCartItems(Long cartItemId,Integer quantity)throws CartItemException;
+
+	public String incrementQuantity(Long cartItemId)throws CartItemException;
+	public String decrementQuantity(Long cartItemId)throws CartItemException;
 	
 	public CartItems isCartItemExist(Cart cart, Product product, String size, Long userId);
 	

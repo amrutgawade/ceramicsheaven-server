@@ -37,16 +37,39 @@ public class CartItemServiceImplementation implements CartItemService{
 		return createdCartItem;
 	}
 
-	@Override
-	public String updateCartItems(Long cartItemId, Integer quantity)throws CartItemException {
-		CartItems item = findCartItemById(cartItemId);
+//	@Override
+//	public String updateCartItems(Long cartItemId, Integer quantity)throws CartItemException {
+//		CartItems item = findCartItemById(cartItemId);
 //		User user = userService.findById(item.getId());
+//		item.setQuantity(quantity);
+//		item.setPrice(quantity*item.getProduct().getPrice());
+//		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
+//		cartItemRepository.save(item);
+//		return "updated Successfully";
+//	}
+
+	@Override
+	public String incrementQuantity(Long cartItemId) throws CartItemException {
+		CartItems item = findCartItemById(cartItemId);
+		Integer quantity = item.getQuantity()+1;
 		item.setQuantity(quantity);
 		item.setPrice(quantity*item.getProduct().getPrice());
 		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
 		cartItemRepository.save(item);
-		return "updated Successfully";
+		return "Quantity Updated";
 	}
+
+	@Override
+	public String decrementQuantity(Long cartItemId) throws CartItemException {
+		CartItems item = findCartItemById(cartItemId);
+		Integer quantity = item.getQuantity()-1;
+		item.setQuantity(quantity);
+		item.setPrice(quantity*item.getProduct().getPrice());
+		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
+		cartItemRepository.save(item);
+		return "Quantity Update";
+	}
+
 
 	@Override
 	public CartItems isCartItemExist(Cart cart, Product product, String size, Long userId) {
