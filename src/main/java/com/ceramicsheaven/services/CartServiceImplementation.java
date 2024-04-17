@@ -9,6 +9,11 @@ import com.ceramicsheaven.requests.AddItemRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 @Service
 public class CartServiceImplementation implements CartService{
 
@@ -88,6 +93,11 @@ public class CartServiceImplementation implements CartService{
 	public Cart findUserCart(Long userId) {
 		Cart cart = cartRepository.findByUserId(userId);
 
+		List<CartItems> cartItemsList = new ArrayList<>(cart.getCartItems());
+
+		// Sort cart items by ID
+		Collections.sort(cartItemsList, Comparator.comparing(CartItems::getId));
+
 		Integer totalPrice=0;
 		Integer totalDiscountedPrice=0;
 		Integer totalItems=0;
@@ -103,6 +113,9 @@ public class CartServiceImplementation implements CartService{
 		cart.setTotalItem(totalItems);
 		cart.setDiscount(totalPrice-totalDiscountedPrice);
 		cart.setTotalPrice(totalPrice+50);
+
+
+
 
 		return cartRepository.save(cart);
 	}
