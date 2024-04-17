@@ -1,6 +1,7 @@
 package com.ceramicsheaven.controllers;
 
 import com.ceramicsheaven.exceptions.UserException;
+import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.requests.UpdatePasswordRequest;
 import com.ceramicsheaven.responses.ApiResponse;
@@ -38,4 +39,14 @@ public class UserController {
 		apiResponse.setStatus(true);
 		return  new ResponseEntity<>(apiResponse,HttpStatus.ACCEPTED);
 	}
+
+	@PostMapping("/profile/address")
+	public ResponseEntity<ApiResponse> addAddress(@RequestHeader("Authorization") String jwt,@RequestBody Address address) throws UserException {
+		String response = userService.addAddress(jwt,address);
+		ApiResponse apiResponse = new ApiResponse();
+		apiResponse.setMessage(response);
+		apiResponse.setStatus(true);
+		return  new ResponseEntity<>(apiResponse,HttpStatus.ACCEPTED);
+	}
+
 }

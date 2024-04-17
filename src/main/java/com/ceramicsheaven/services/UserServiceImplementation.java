@@ -3,7 +3,9 @@ package com.ceramicsheaven.services;
 
 import com.ceramicsheaven.config.JwtProvider;
 import com.ceramicsheaven.exceptions.UserException;
+import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.repositories.AddressRepository;
 import com.ceramicsheaven.repositories.UserRepository;
 import com.ceramicsheaven.requests.UpdatePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,12 @@ public class UserServiceImplementation implements UserService{
 	
 	private UserRepository userRepository;
 	private JwtProvider jwtProvider;
-	
+	private AddressRepository addressRepository;
 	@Autowired
-	public UserServiceImplementation(UserRepository userRepository, JwtProvider jwtProvider) {
+	public UserServiceImplementation(UserRepository userRepository, JwtProvider jwtProvider, AddressRepository addressRepository) {
 		this.userRepository = userRepository;
 		this.jwtProvider = jwtProvider;
+		this.addressRepository = addressRepository;
 	}
 
 	@Override
@@ -82,6 +85,25 @@ public class UserServiceImplementation implements UserService{
 			return "Current password is not valid";
 		}
 
+	}
+
+	@Override
+	public String addAddress(String jwt, Address address) throws UserException {
+		String email = jwtProvider.getEmailFromToken(jwt);
+		User existingUser = userRepository.findByEmail(email);
+
+		Address newAddress = new Address();
+		newAddress.setUser(existingUser);
+		newAddress.setFirstName(address.getFirstName());
+		newAddress.setLastName(address.getLastName());
+		newAddress.setStreetAddress(address.getStreetAddress());
+		newAddress.setCity(address.getCity());
+		newAddress.setState(address.getState());
+		newAddress.setZipCode(address.getZipCode());
+		newAddress.setMobile(address.getMobile());
+		addressRepository.save(newAddress);
+
+		return "Address Added Successfully";
 	}
 
 }
