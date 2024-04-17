@@ -61,17 +61,19 @@ public class CartServiceImplementation implements CartService{
 //				}
 //			}
 
-			Integer price = req.getQuantity()*product.getDiscountedPrice();
+			Integer price = req.getQuantity()*product.getPrice();
 			System.out.println(price);
 			cartItem.setPrice(price);
 			cartItem.setSize(req.getSize());
 			cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice()*cartItem.getQuantity());
+
 //			CartItems createdCartItems = cartItemService.creaCartItems(cartItem);
 			cartItemRepository.save(cartItem);
 			cart.getCartItems().add(cartItem);
+			cart.setDiscount(price-cartItem.getDiscountedPrice());
 			return "Item Add To Cart";
 		}else{
-			Integer price = req.getQuantity()*product.getDiscountedPrice();
+			Integer price = req.getQuantity()*product.getPrice();
 			isPresent.setPrice(isPresent.getPrice()+price);
 			isPresent.setDiscountedPrice(isPresent.getDiscountedPrice()+isPresent.getProduct().getDiscountedPrice()*isPresent.getQuantity());
 			isPresent.setQuantity(isPresent.getQuantity()+req.getQuantity());
@@ -99,8 +101,9 @@ public class CartServiceImplementation implements CartService{
 
 		cart.setTotalDiscountedPrice(totalDiscountedPrice);
 		cart.setTotalItem(totalItems);
-		cart.setTotalPrice(totalPrice+50);
 		cart.setDiscount(totalPrice-totalDiscountedPrice);
+		cart.setTotalPrice(totalPrice+50);
+
 		return cartRepository.save(cart);
 	}
 }
