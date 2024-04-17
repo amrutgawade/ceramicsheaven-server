@@ -93,11 +93,6 @@ public class CartServiceImplementation implements CartService{
 	public Cart findUserCart(Long userId) {
 		Cart cart = cartRepository.findByUserId(userId);
 
-		List<CartItems> cartItemsList = new ArrayList<>(cart.getCartItems());
-
-		// Sort cart items by ID
-		Collections.sort(cartItemsList, Comparator.comparing(CartItems::getId));
-
 		Integer totalPrice=0;
 		Integer totalDiscountedPrice=0;
 		Integer totalItems=0;

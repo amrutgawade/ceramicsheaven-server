@@ -3,6 +3,7 @@ package com.ceramicsheaven.controllers;
 import com.ceramicsheaven.exceptions.ProductException;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Cart;
+import com.ceramicsheaven.model.CartItems;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.requests.AddItemRequest;
 import com.ceramicsheaven.responses.ApiResponse;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
 
 @RequestMapping("/api/cart")
 @RestController
@@ -27,7 +30,9 @@ public class CartController {
 	public ResponseEntity<Cart> findUserCart(@RequestHeader("Authorization") String jwt) throws UserException {
 		User user = userService.findUserProfileByJwt(jwt);
 		Cart cart = cartService.findUserCart(user.getId());
-
+		List<CartItems> cartItemsList = new ArrayList<>(cart.getCartItems());
+		Collections.sort(cartItemsList, Comparator.comparing(CartItems::getId));
+		cart.setCartItems(new HashSet<>(cartItemsList));
 		return new ResponseEntity<Cart>(cart,HttpStatus.OK);
 	}
 	
