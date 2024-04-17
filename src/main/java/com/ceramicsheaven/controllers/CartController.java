@@ -25,16 +25,23 @@ public class CartController {
 	@Autowired
 	private UserService userService;
 
-	
+
 	@GetMapping("/")
 	public ResponseEntity<Cart> findUserCart(@RequestHeader("Authorization") String jwt) throws UserException {
 		User user = userService.findUserProfileByJwt(jwt);
 		Cart cart = cartService.findUserCart(user.getId());
-		List<CartItems> cartItemsList = new ArrayList<>(cart.getCartItems());
-		Collections.sort(cartItemsList, Comparator.comparing(CartItems::getId));
-		cart.setCartItems(new HashSet<>(cartItemsList));
-		return new ResponseEntity<Cart>(cart,HttpStatus.OK);
+
+		Set<CartItems> sortedCartItemsSet = new TreeSet<>(new Comparator<CartItems>() {
+			@Override
+			public int compare(CartItems item1, CartItems item2) {
+				return Long.compare(item1.getId(), item2.getId());
+			}
+		});
+		sortedCartItemsSet.addAll(cart.getCartItems());
+		cart.setCartItems(sortedCartItemsSet);
+		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 	}
+
 	
 	@PutMapping("/add")
 	public ResponseEntity<ApiResponse> addItemToCart(@RequestBody AddItemRequest request, @RequestHeader("Authorization") String jwt)throws UserException , ProductException {
