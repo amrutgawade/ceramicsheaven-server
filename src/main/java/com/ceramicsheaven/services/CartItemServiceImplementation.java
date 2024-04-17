@@ -1,10 +1,8 @@
 package com.ceramicsheaven.services;
 
+import com.ceramicsheaven.exceptions.ProductException;
 import com.ceramicsheaven.exceptions.UserException;
-import com.ceramicsheaven.model.Cart;
-import com.ceramicsheaven.model.CartItems;
-import com.ceramicsheaven.model.Product;
-import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.model.*;
 import com.ceramicsheaven.repositories.CartItemRepository;
 import com.ceramicsheaven.exceptions.CartItemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,25 +47,63 @@ public class CartItemServiceImplementation implements CartItemService{
 //	}
 
 	@Override
-	public String incrementQuantity(Long cartItemId) throws CartItemException {
+	public String incrementQuantity(Long cartItemId) throws CartItemException, ProductException {
+		String res = null;
 		CartItems item = findCartItemById(cartItemId);
-		Integer quantity = item.getQuantity()+1;
-		item.setQuantity(quantity);
-		item.setPrice(quantity*item.getProduct().getPrice());
-		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
-		cartItemRepository.save(item);
-		return "Quantity Updated";
+		Integer quantity = item.getQuantity();
+		String[] dimensions = item.getSize().split("X");
+			if (dimensions.length != 2) {
+				throw new ProductException("Invalid size format");
+			}
+			int width = Integer.parseInt(dimensions[0].trim());
+			int height = Integer.parseInt(dimensions[1].trim());
+
+			Product product = item.getProduct();
+			for (Size size : product.getSizes()) {
+				if (size.getWidth() == width && size.getHeight() == height) {
+					if (quantity.equals(size.getQuantity())){
+						 res =  "Quantity reach out";
+					}else{
+						quantity +=1;
+						item.setQuantity(quantity);
+						item.setPrice(quantity*item.getProduct().getPrice());
+						item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
+						cartItemRepository.save(item);
+						 res =  "Quantity Updated";
+					}
+				}
+			}
+		return res;
 	}
 
 	@Override
-	public String decrementQuantity(Long cartItemId) throws CartItemException {
+	public String decrementQuantity(Long cartItemId) throws CartItemException,ProductException{
+		String res = null;
 		CartItems item = findCartItemById(cartItemId);
-		Integer quantity = item.getQuantity()-1;
-		item.setQuantity(quantity);
-		item.setPrice(quantity*item.getProduct().getPrice());
-		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
-		cartItemRepository.save(item);
-		return "Quantity Update";
+		Integer quantity = item.getQuantity();
+		String[] dimensions = item.getSize().split("X");
+		if (dimensions.length != 2) {
+			throw new ProductException("Invalid size format");
+		}
+		int width = Integer.parseInt(dimensions[0].trim());
+		int height = Integer.parseInt(dimensions[1].trim());
+
+		Product product = item.getProduct();
+		for (Size size : product.getSizes()) {
+			if (size.getWidth() == width && size.getHeight() == height) {
+				if (quantity==1){
+					res =  "Quantity reach out";
+				}else{
+					quantity -=1;
+					item.setQuantity(quantity);
+					item.setPrice(quantity*item.getProduct().getPrice());
+					item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
+					cartItemRepository.save(item);
+					res =  "Quantity Updated";
+				}
+			}
+		}
+		return res;
 	}
 
 

@@ -1,6 +1,7 @@
 package com.ceramicsheaven.services;
 
 
+import com.ceramicsheaven.exceptions.ProductException;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Cart;
 import com.ceramicsheaven.model.CartItems;
@@ -13,8 +14,8 @@ public interface CartItemService {
 	
 //	public String updateCartItems(Long cartItemId,Integer quantity)throws CartItemException;
 
-	public String incrementQuantity(Long cartItemId)throws CartItemException;
-	public String decrementQuantity(Long cartItemId)throws CartItemException;
+	public String incrementQuantity(Long cartItemId)throws CartItemException, ProductException;
+	public String decrementQuantity(Long cartItemId)throws CartItemException,ProductException;
 	
 	public CartItems isCartItemExist(Cart cart, Product product, String size, Long userId);
 	
