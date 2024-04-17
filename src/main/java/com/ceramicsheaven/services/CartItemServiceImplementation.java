@@ -92,7 +92,7 @@ public class CartItemServiceImplementation implements CartItemService{
 		for (Size size : product.getSizes()) {
 			if (size.getWidth() == width && size.getHeight() == height) {
 				if (quantity==1){
-					res =  "Quantity reach out";
+					res =  "At-least 1 Quantity";
 				}else{
 					quantity -=1;
 					item.setQuantity(quantity);
