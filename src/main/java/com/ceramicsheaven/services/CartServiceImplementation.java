@@ -74,6 +74,7 @@ public class CartServiceImplementation implements CartService{
 			Integer price = req.getQuantity()*product.getDiscountedPrice();
 			isPresent.setPrice(isPresent.getPrice()+price);
 			isPresent.setDiscountedPrice(isPresent.getDiscountedPrice()+isPresent.getProduct().getDiscountedPrice()*isPresent.getQuantity());
+			isPresent.setQuantity(isPresent.getQuantity()+req.getQuantity());
 //			CartItems createdCartItems = cartItemService.creaCartItems(cartItem);
 			cartItemRepository.save(isPresent);
 			return "Item Updated To Cart";
