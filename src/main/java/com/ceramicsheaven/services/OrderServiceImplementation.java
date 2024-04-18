@@ -7,8 +7,6 @@ import com.ceramicsheaven.repositories.OrderItemRepository;
 import com.ceramicsheaven.repositories.OrderRepository;
 import com.ceramicsheaven.repositories.UserRepository;
 import com.ceramicsheaven.exceptions.OrderException;
-import com.ceramicsheaven.model.*;
-import com.ceramicsheaven.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class OrderServiceImplementation implements OrderService{
 	private CartService cartService;
 	private AddressRepository addressRepository;
 	private UserRepository userRepository;
-//	private OrderItemService orderItemService;
+
 	private OrderItemRepository orderItemRepository;
 
 	@Autowired
@@ -34,7 +32,7 @@ public class OrderServiceImplementation implements OrderService{
 		this.cartService = cartService;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
-//		this.orderItemService = orderItemService;
+// this.orderItemService = orderItemService;
 		this.orderItemRepository = orderItemRepository;
 	}
 
@@ -42,7 +40,7 @@ public class OrderServiceImplementation implements OrderService{
 
 	@Override
 	public Order createOrder(User user, Address shippingAddress) {
-
+		LocalDateTime localDateTime = LocalDateTime.now();
 		shippingAddress.setUser(user);
 		Address address = addressRepository.save(shippingAddress);
 		user.getAddress().add(address);
@@ -74,13 +72,15 @@ public class OrderServiceImplementation implements OrderService{
 		createdOrder.setTotalItem(orderItems.size());
 		createdOrder.setDiscount(cart.getDiscount());
 		createdOrder.setShippingAddresses(address);
-		createdOrder.setOrderDate(LocalDateTime.now());
+		createdOrder.setOrderDate(localDateTime);
+		createdOrder.setDeliveryDate(localDateTime.plusDays(7));
 		createdOrder.setOrderStatus("PENDING");
 		createdOrder.getPaymentDetails().setPaymentStatus("PENDING");
+		createdOrder.getPaymentDetails().setPaymentMethod("CASH_ON_DELIVERY");
 		createdOrder.setCreatedAt(LocalDateTime.now());
 
 		Order savedOrder = orderRepository.save(createdOrder);
-        for(OrderItem orderItem:orderItems){
+		for(OrderItem orderItem:orderItems){
 			orderItem.setOrder(createdOrder);
 			orderItemRepository.save(orderItem);
 		}
@@ -113,6 +113,9 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order confirmedOrder(Long orderId) throws OrderException {
 		Order order = findOrderById(orderId);
+		if (order==null){
+			throw new OrderException("There is not available product");
+		}
 		order.setOrderStatus("CONFIRMED");
 
 		return order;
@@ -121,6 +124,9 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order shippedOrder(Long orderId) throws OrderException {
 		Order order = findOrderById(orderId);
+		if (order==null){
+			throw new OrderException("There is not available product");
+		}
 		order.setOrderStatus("SHIPPED");
 
 		return order;
@@ -129,6 +135,9 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order deliveredOrder(Long orderId) throws OrderException {
 		Order order = findOrderById(orderId);
+		if (order==null){
+			throw new OrderException("There is not available product");
+		}
 		order.setOrderStatus("DELIVERED");
 
 		return order;
@@ -137,6 +146,9 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order cancledOrder(Long orderId) throws OrderException {
 		Order order = findOrderById(orderId);
+		if (order==null){
+            throw new OrderException("There is not available product");
+		}
 		order.setOrderStatus("CANCELLED");
 		return order;
 	}
@@ -149,8 +161,11 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public void deleteOrder(Long orderId) throws OrderException {
 		Order order = findOrderById(orderId);
+		if (order==null){
+			throw new OrderException("There is not available product");
+		}
 		orderRepository.deleteById(orderId);
-		
+
 	}
 
 }
