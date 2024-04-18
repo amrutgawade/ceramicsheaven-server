@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -104,6 +106,19 @@ public class UserServiceImplementation implements UserService{
 		addressRepository.save(newAddress);
 
 		return "Address Added Successfully";
+	}
+
+	@Override
+	public List<Address> getAddress(String jwt) throws UserException {
+		String email = jwtProvider.getEmailFromToken(jwt);
+		User existingUser = userRepository.findByEmail(email);
+		return addressRepository.findAllByUserId(existingUser.getId());
+	}
+
+	@Override
+	public String removeAddress(String jwt, Long addressId) throws UserException {
+		addressRepository.deleteById(addressId);
+		return "Address Deleted Successfully";
 	}
 
 }

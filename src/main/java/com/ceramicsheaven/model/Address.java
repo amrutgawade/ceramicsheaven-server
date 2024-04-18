@@ -29,7 +29,7 @@ public class Address {
 	@Column(name = "zip_code")
 	private String zipCode;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User user;

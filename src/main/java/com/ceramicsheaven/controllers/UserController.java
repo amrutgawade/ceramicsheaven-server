@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -49,4 +51,15 @@ public class UserController {
 		return  new ResponseEntity<>(apiResponse,HttpStatus.ACCEPTED);
 	}
 
+	@GetMapping("/profile/getAddress")
+	public ResponseEntity<List<Address>> getAddress(@RequestHeader("Authorization") String jwt) throws UserException {
+		List<Address> addresses = userService.getAddress(jwt);
+		return  new ResponseEntity<>(addresses,HttpStatus.ACCEPTED);
+	}
+
+	@DeleteMapping("/profile/removeAddress/{addressId}")
+	public ResponseEntity<String> deleteAddress(@RequestHeader("Authorization") String jwt,@PathVariable Long addressId) throws UserException {
+		String res = userService.removeAddress(jwt,addressId);
+		return  new ResponseEntity<>(res,HttpStatus.ACCEPTED);
+	}
 }
