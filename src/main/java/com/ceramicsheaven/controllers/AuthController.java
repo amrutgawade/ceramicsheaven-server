@@ -10,6 +10,7 @@ import com.ceramicsheaven.requests.LoginRequest;
 import com.ceramicsheaven.responses.AuthResponse;
 import com.ceramicsheaven.services.CartService;
 
+import com.ceramicsheaven.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,17 +35,18 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     private CustomUserServiceImplementation customUserService;
     private CartService cartService;
-
+    private EmailService emailService;
     public AuthController() {
     }
 
     @Autowired
-    public AuthController(UserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, CustomUserServiceImplementation customUserService, CartService cartService) {
+    public AuthController(UserRepository userRepository, JwtProvider jwtProvider, PasswordEncoder passwordEncoder, CustomUserServiceImplementation customUserService, CartService cartService,EmailService emailService) {
         this.userRepository = userRepository;
         this.jwtProvider = jwtProvider;
         this.passwordEncoder = passwordEncoder;
         this.customUserService = customUserService;
         this.cartService = cartService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/signup")
@@ -87,7 +89,8 @@ public class AuthController {
         authResponse.setJwt(token);
 
         authResponse.setMessage("Signup Successfully");
-
+        String fullName = user.getFirstName() + " "+ user.getLastName();
+        emailService.registrationEmail(email,fullName);
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
     @PostMapping("/signin")

@@ -125,9 +125,11 @@ public class Address {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
-	
-	
-	
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "Address\n" +
+				streetAddress+" "+city+" "+state +" " + zipCode;
+	}
 }

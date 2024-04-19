@@ -4,9 +4,11 @@ import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.Order;
 import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.repositories.CartRepository;
 import com.ceramicsheaven.repositories.OrderRepository;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.responses.PaymentResponse;
+import com.ceramicsheaven.services.EmailService;
 import com.ceramicsheaven.services.OrderService;
 import com.ceramicsheaven.services.UserService;
 import com.razorpay.Payment;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api")
@@ -38,6 +42,13 @@ public class PaymentController {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private CartRepository cartRepository;
+
 
     @PostMapping("/payment/{paymentMethod}")
     public ResponseEntity<?> createPaymentLink(@RequestBody Address shippingAddress,@PathVariable String paymentMethod, @RequestHeader("Authorization") String jwt) throws OrderException, RazorpayException, UserException {
@@ -61,6 +72,10 @@ public class PaymentController {
             paymentResponse.setTotalPrice(order.getTotalPrice());
             paymentResponse.setTotalDiscountedPrice(order.getTotalDiscountedPrice());
             paymentResponse.setDiscount(order.getDiscount());
+
+            String fullName = user.getFirstName()+" "+user.getLastName();
+            emailService.orderPlaced(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
+            cartRepository.deleteAll();
 
 //            ApiResponse apiResponse = new ApiResponse();
 //            apiResponse.setMessage("Your Order get placed");
