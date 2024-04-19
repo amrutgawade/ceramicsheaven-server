@@ -34,6 +34,8 @@ public class EmailServiceImplementation implements EmailService{
     @Override
     public void orderPlaced(String fullName, String email, Long orderId,LocalDateTime orderDate, LocalDateTime deliveryDate, Double totalPrice, Integer discount, String paymentMethod,String paymentStatus, Address address) {
         try {
+            totalPrice = totalPrice-50;
+            Integer shippingCharges = 50;
             String orderDay = orderDate.getDayOfWeek().toString();
             String orderMonth = orderDate.getMonth().toString();
             String dateOrder = String.valueOf(orderDate.getDayOfMonth());
@@ -56,6 +58,7 @@ public class EmailServiceImplementation implements EmailService{
                     "______________________"+"\n\n"+
                     "Order summary\n\n"+"Order #"+orderId+"\nPlaced on: "+orderDay+", "+dateOrder+orderMonth+"\nDelivered on: "+deliveryDay+", "+dateDelivery+deliveryMonth+"\n\n"+
                     "Total price"+"         "+totalPrice+"\n"+
+                    "Shipping Charges"+"         "+shippingCharges+"\n"+
                     "You saved"+"           "+discount+"\n"+
                     "Payment status"+"      "+paymentStatus+"\n"+
                     "Payment method"+"      "+paymentMethod);

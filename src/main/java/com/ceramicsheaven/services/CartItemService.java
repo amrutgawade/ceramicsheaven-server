@@ -8,6 +8,8 @@ import com.ceramicsheaven.model.CartItems;
 import com.ceramicsheaven.model.Product;
 import com.ceramicsheaven.exceptions.CartItemException;
 
+import java.util.List;
+
 public interface CartItemService {
 
 	public CartItems creaCartItems(CartItems cartItems);
@@ -23,4 +25,5 @@ public interface CartItemService {
 	
 	public CartItems findCartItemById(Long cartItemId) throws CartItemException;
 
+	public void updateProductsQuantity(Long userId)throws ProductException;
 }

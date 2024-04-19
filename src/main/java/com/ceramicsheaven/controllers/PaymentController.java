@@ -1,16 +1,16 @@
 package com.ceramicsheaven.controllers;
 import com.ceramicsheaven.exceptions.OrderException;
+import com.ceramicsheaven.exceptions.ProductException;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Address;
+import com.ceramicsheaven.model.Cart;
 import com.ceramicsheaven.model.Order;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.repositories.CartRepository;
 import com.ceramicsheaven.repositories.OrderRepository;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.responses.PaymentResponse;
-import com.ceramicsheaven.services.EmailService;
-import com.ceramicsheaven.services.OrderService;
-import com.ceramicsheaven.services.UserService;
+import com.ceramicsheaven.services.*;
 import com.razorpay.Payment;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
@@ -49,9 +49,14 @@ public class PaymentController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private CartItemService cartItemService;
+
+    @Autowired
+    private CartService cartService;
 
     @PostMapping("/payment/{paymentMethod}")
-    public ResponseEntity<?> createPaymentLink(@RequestBody Address shippingAddress,@PathVariable String paymentMethod, @RequestHeader("Authorization") String jwt) throws OrderException, RazorpayException, UserException {
+    public ResponseEntity<?> createPaymentLink(@RequestBody Address shippingAddress,@PathVariable String paymentMethod, @RequestHeader("Authorization") String jwt) throws RazorpayException, UserException, ProductException {
         if (paymentMethod.equals("CASH_ON_DELIVERY")){
             User user = userService.findUserProfileByJwt(jwt);
             Order order = orderService.createOrder(user, shippingAddress);
@@ -73,9 +78,11 @@ public class PaymentController {
             paymentResponse.setTotalDiscountedPrice(order.getTotalDiscountedPrice());
             paymentResponse.setDiscount(order.getDiscount());
 
+            cartItemService.updateProductsQuantity(user.getId());
             String fullName = user.getFirstName()+" "+user.getLastName();
             emailService.orderPlaced(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
             cartRepository.deleteAll();
+            Cart cart = cartService.CreateCart(user);
 
 //            ApiResponse apiResponse = new ApiResponse();
 //            apiResponse.setMessage("Your Order get placed");
