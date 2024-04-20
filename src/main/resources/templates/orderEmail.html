@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+</head>
+<body style="font-family: Arial, sans-serif">
+<!-- Header Section -->
+<div
+        style="
+        background-color: #232f3e;
+        padding: 20px;
+        color: #ffffff;
+        text-align: center;
+      "
+>
+    <h1>Order Confirmation</h1>
+    <!-- <div>
+        <h3>Order#</h3>
+        <p style="color: blue;">4666648484</p>
+      </div> -->
+</div>
+
+<!-- Order Details Section -->
+<div style="padding: 20px">
+    <h3 style="font-weight: bold; color: #ff8c00">${fullName}</h3>
+    <p>
+        Thank you for your order. Your estimated delivery date is integrated
+        below. If you would like to view the status of your order or make any
+        changes to it, please visit your orders on CeramicsHeaven.
+    </p>
+    <hr style="border-top: 2px solid #ff8c00; margin: 20px 0" />
+    <table style="width: 100%">
+        <tr>
+            <td style="width: 50%; vertical-align: top">
+                <p><strong>Arriving:</strong></p>
+                <p>${arrivingDate}</p>
+                <p><strong>Payment Method:</strong></p>
+                <p>${paymentMethod}</p>
+            </td>
+            <td style="width: 50%; vertical-align: top">
+                <p><strong>Your Order Will Sent To:</strong></p>
+                <p>${addressName}</p>
+                <p>
+                    ${address}
+                </p>
+            </td>
+        </tr>
+    </table>
+    <hr style="border-top: 2px solid #ff8c00; margin: 20px 0" />
+    <h3 style="font-weight: bold; color: #ff8c00">Order summary</h3>
+    <p>${orderId}</p>
+    <p>${placedDate}</p>
+
+    <table style="width: fit-content%">
+        <tr>
+            <td style="width: 50%; vertical-align: top">
+                <p><strong>Item Subtotal:</strong></p>
+                <p><strong>Shipping & Handling:</strong></p>
+                <p><strong>Order Total:</strong></p>
+            </td>
+            <td style="width: 30%; vertical-align: top">
+                <p>${subTotal}</p>
+                <p>${shipping}</p>
+                <p>${subTotal}</p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Footer Section -->
+<div style="background-color: #f2f2f2; padding: 20px; text-align: center">
+    <p>
+        If you have any questions, please contact
+        <a href="support@ceramicsheaven.com">support@ceramiccsheaven.com</a>
+    </p>
+    <p>Thank you for shopping with us!</p>
+</div>
+</body>
+</html>

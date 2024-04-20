@@ -167,6 +167,7 @@ public class CartItemServiceImplementation implements CartItemService{
 				if (size.getWidth() == width && size.getHeight() == height) {
 					size.setQuantity(size.getQuantity() - cartItem.getQuantity());
 				}
+				product.setQuantity(product.getQuantity()-cartItem.getQuantity());
 			}
 		}
 
