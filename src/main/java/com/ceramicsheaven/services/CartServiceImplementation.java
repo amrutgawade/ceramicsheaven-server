@@ -54,7 +54,6 @@ public class CartServiceImplementation implements CartService{
 			cartItem.setUserId(userId);
 
 			Integer price = req.getQuantity()*product.getPrice();
-			System.out.println(price);
 			cartItem.setPrice(price);
 			cartItem.setSize(req.getSize());
 			cartItem.setDiscountedPrice(cartItem.getProduct().getDiscountedPrice()*cartItem.getQuantity());
@@ -90,14 +89,10 @@ public class CartServiceImplementation implements CartService{
 			totalItems+=1;
 		}
 
-
-		cart.setTotalDiscountedPrice(totalDiscountedPrice+50);
+		cart.setTotalDiscountedPrice(totalDiscountedPrice);
 		cart.setTotalItem(totalItems);
 		cart.setDiscount(totalPrice-totalDiscountedPrice);
 		cart.setTotalPrice(totalPrice);
-
-
-
 
 		return cartRepository.save(cart);
 	}

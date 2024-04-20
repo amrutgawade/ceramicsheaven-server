@@ -61,6 +61,7 @@ public class EmailServiceImplementation implements EmailService{
         MimeMessage message = mailSender.createMimeMessage();
         Integer price = totalPrice-50;
         Integer shippingCharges = 50;
+        totalPrice = totalPrice+50;
         String orderDay = orderDate.getDayOfWeek().toString();
         String orderMonth = orderDate.getMonth().toString();
         String dateOrder = String.valueOf(orderDate.getDayOfMonth());
@@ -88,7 +89,7 @@ public class EmailServiceImplementation implements EmailService{
             String placedDate = "Placed on "+orderDay+", "+orderMonth+" "+dateOrder+", "+orderYear;
             String subTotal = "Rs."+price;
             String shipping = "Rs."+shippingCharges;
-            totalPrice = totalPrice+50;
+
             String orderTotal = "Rs."+totalPrice;
 
             model.put("fullName",fullName);

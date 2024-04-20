@@ -49,7 +49,7 @@ public class OrderServiceImplementation implements OrderService{
 		Cart cart = cartService.findUserCart(user.getId());
 		List<OrderItem> orderItems = new ArrayList<>();
 
-		for (CartItems cartItems:cart.getCartItems()) {
+		for (CartItems cartItems : cart.getCartItems()) {
 			OrderItem orderItem = new OrderItem();
 			orderItem.setPrice(cartItems.getPrice());
 			orderItem.setProduct(cartItems.getProduct());
@@ -57,14 +57,16 @@ public class OrderServiceImplementation implements OrderService{
 			orderItem.setSize(cartItems.getSize());
 			orderItem.setUserId(cartItems.getUserId());
 			orderItem.setDiscountedPrice(cartItems.getDiscountedPrice());
-			System.out.println(orderItem.toString());
 
-			OrderItem createdOrderItem = orderItemRepository.save(orderItem);
-			System.out.println(createdOrderItem);
-			orderItems.add(createdOrderItem);
+			orderItemRepository.save(orderItem);
+			orderItems.add(orderItem);
 		}
 
+		// Generate a unique order_id
+		Long orderId = generateUniqueOrderId();
+
 		Order createdOrder = new Order();
+		createdOrder.setId(orderId);
 		createdOrder.setUser(user);
 		createdOrder.setOrderItems(orderItems);
 		createdOrder.setTotalPrice(cart.getTotalPrice());
@@ -78,14 +80,22 @@ public class OrderServiceImplementation implements OrderService{
 		createdOrder.getPaymentDetails().setPaymentStatus("PENDING");
 		createdOrder.getPaymentDetails().setPaymentMethod("CASH_ON_DELIVERY");
 		createdOrder.setCreatedAt(LocalDateTime.now());
+		orderRepository.save(createdOrder);
 
-		Order savedOrder = orderRepository.save(createdOrder);
-		for(OrderItem orderItem:orderItems){
+		for (OrderItem orderItem : orderItems) {
 			orderItem.setOrder(createdOrder);
 			orderItemRepository.save(orderItem);
 		}
-		return savedOrder;
+		return createdOrder;
 	}
+
+	// Method to generate a unique order_id
+	private Long generateUniqueOrderId() {
+		// Logic to generate a unique order_id, for example, you can use a UUID or a sequence
+		// For simplicity, let's say you use the current timestamp as the order_id
+		return System.currentTimeMillis();
+	}
+
 
 	@Override
 	public Order findOrderById(Long orderId) throws OrderException {

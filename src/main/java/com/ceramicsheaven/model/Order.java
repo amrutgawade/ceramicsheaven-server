@@ -11,13 +11,10 @@ import java.util.List;
 public class Order {
 	
 	 @Id
-	 @GeneratedValue(strategy = GenerationType.AUTO)
+//	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private Long id;
 
-	 @Column(name = "order_id")
-	 private Long orderId;
-
-	 @ManyToOne
+	 @ManyToOne(cascade = CascadeType.ALL)
 	 private User user;
 
 	 @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
@@ -41,11 +38,12 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(User user, List<OrderItem> orderItems, LocalDateTime orderDate,
+	public Order(Long id,User user, List<OrderItem> orderItems, LocalDateTime orderDate,
 				 LocalDateTime deliveryDate, Address shippingAddresses, PaymentDetails paymentDetails,
 				 Double totalPrice, Integer totalDiscountedPrice, Integer discount, String orderStatus, Integer totalItem,
 				 LocalDateTime createdAt) {
 		this.user = user;
+		this.id=id;
 		this.orderItems = orderItems;
 		this.orderDate = orderDate;
 		this.deliveryDate = deliveryDate;
@@ -67,13 +65,6 @@ public class Order {
 		this.id = id;
 	}
 
-	public Long getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
 
 	public User getUser() {
 		return user;
@@ -175,7 +166,6 @@ public class Order {
 	public String toString() {
 		return "Order{" +
 				"id=" + id +
-				", orderId=" + orderId +
 				", user=" + user +
 				", orderItems=" + orderItems +
 				", orderDate=" + orderDate +
