@@ -11,8 +11,8 @@ import java.util.List;
 public class PaymentResponse {
    private Long orderId;
    private List<OrderItem> orderItems;
-   private LocalDateTime orderDate;
-   private LocalDateTime deliveryDate;
+   private String orderDate;
+   private String deliveryDate;
    private Address shippingAddress;
    private String paymentMethod;
    private String paymentStatus;
@@ -23,7 +23,7 @@ public class PaymentResponse {
     public PaymentResponse() {
     }
 
-    public PaymentResponse(Long orderId, List<OrderItem> orderItems, LocalDateTime orderDate, LocalDateTime deliveryDate, Address shippingAddress, String paymentMethod, String paymentStatus, Double totalPrice, Integer totalDiscountedPrice, Integer discount) {
+    public PaymentResponse(Long orderId, List<OrderItem> orderItems, String orderDate, String deliveryDate, Address shippingAddress, String paymentMethod, String paymentStatus, Double totalPrice, Integer totalDiscountedPrice, Integer discount) {
         this.orderId = orderId;
         this.orderItems = orderItems;
         this.orderDate = orderDate;
@@ -52,19 +52,19 @@ public class PaymentResponse {
         this.orderItems = orderItems;
     }
 
-    public LocalDateTime getOrderDate() {
+    public String getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
-    public LocalDateTime getDeliveryDate() {
+    public String getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(LocalDateTime deliveryDate) {
+    public void setDeliveryDate(String deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -115,5 +115,4 @@ public class PaymentResponse {
     public void setDiscount(Integer discount) {
         this.discount = discount;
     }
-
 }

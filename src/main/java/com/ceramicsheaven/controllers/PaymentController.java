@@ -66,11 +66,28 @@ public class PaymentController {
             order.setOrderStatus("PLACED");
             orderRepository.save(order);
 
+            String orderDay = order.getOrderDate().getDayOfWeek().toString();
+            String orderMonth = order.getOrderDate().getMonth().toString();
+            String dateOrder = String.valueOf(order.getOrderDate().getDayOfMonth());
+            String orderYear = String.valueOf(order.getOrderDate().getYear());
+            orderDay = capitalizeFirstLetter(orderDay);
+            orderMonth = capitalizeFirstLetter(orderMonth);
+
+            String orderDate = orderDay+", "+dateOrder+" "+orderMonth+" "+orderYear;
+
+
+            String deliveryDay = order.getDeliveryDate().getDayOfWeek().toString();
+            String deliveryMonth = order.getDeliveryDate().getMonth().toString();
+            String dateDelivery = String.valueOf(order.getDeliveryDate().getDayOfMonth());
+            String deliveryYear = String.valueOf(order.getOrderDate().getYear());
+
+            String deliveryDate = deliveryDay+", "+dateDelivery+" "+deliveryMonth+" "+deliveryYear;
+
             PaymentResponse paymentResponse = new PaymentResponse();
             paymentResponse.setOrderId(order.getId());
             paymentResponse.setOrderItems(order.getOrderItems());
-            paymentResponse.setOrderDate(order.getOrderDate());
-            paymentResponse.setDeliveryDate(order.getDeliveryDate());
+            paymentResponse.setOrderDate(orderDate);
+            paymentResponse.setDeliveryDate(deliveryDate);
             paymentResponse.setShippingAddress(order.getShippingAddresses());
             paymentResponse.setPaymentMethod(order.getPaymentDetails().getPaymentMethod());
             paymentResponse.setPaymentStatus(order.getPaymentDetails().getPaymentStatus());
@@ -82,7 +99,7 @@ public class PaymentController {
             String fullName = user.getFirstName()+" "+user.getLastName();
             emailService.order(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
             cartRepository.deleteAll();
-            Cart cart = cartService.CreateCart(user);
+            cartService.CreateCart(user);
 
 //            ApiResponse apiResponse = new ApiResponse();
 //            apiResponse.setMessage("Your Order get placed");
@@ -150,5 +167,8 @@ public class PaymentController {
         }catch (Exception ex){
             throw new RazorpayException(ex.getMessage());
         }
+    }
+    public String capitalizeFirstLetter(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 }

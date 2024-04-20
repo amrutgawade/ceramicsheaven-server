@@ -55,7 +55,7 @@ public class EmailServiceImplementation implements EmailService{
     @Override
     public void order(String fullName, String email, Long orderId,LocalDateTime orderDate, LocalDateTime deliveryDate, Double totalPrice, Integer discount, String paymentMethod,String paymentStatus, Address address) {
         MimeMessage message = mailSender.createMimeMessage();
-        totalPrice = totalPrice-50;
+        Double price = totalPrice-50;
         Integer shippingCharges = 50;
         String orderDay = orderDate.getDayOfWeek().toString();
         String orderMonth = orderDate.getMonth().toString();
@@ -79,10 +79,10 @@ public class EmailServiceImplementation implements EmailService{
 
             fullName = "Hello "+fullName+",";
             String addressName = address.getFirstName()+" "+address.getLastName()+",";
-            String order_Id = "OrderId: "+orderId;
+            String order_Id = "Order Id: #"+orderId;
             String arrivingDate = deliveryDay+", "+deliveryMonth+" "+dateDelivery;
             String placedDate = "Placed on "+orderDay+", "+orderMonth+" "+dateOrder+", "+orderYear;
-            String subTotal = "Rs."+totalPrice;
+            String subTotal = "Rs."+price;
             String shipping = "Rs."+shippingCharges;
             totalPrice = totalPrice+50;
             String orderTotal = "Rs."+totalPrice;
