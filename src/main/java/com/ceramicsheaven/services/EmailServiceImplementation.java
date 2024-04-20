@@ -33,17 +33,21 @@ public class EmailServiceImplementation implements EmailService{
     }
 
     @Override
-    public void registrationEmail(String email,String fullName) {
+    public void registrationEmail(String email) {
+        MimeMessage message = mailSender.createMimeMessage();
+        Map<String,Object> model = new HashMap<>();
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("ceramicsheaven2023@gmail.com");
-            message.setTo(email);
-            message.setText("Hello,"+"\n"+fullName+"\n"+"congratulation for successful registration");
-            message.setSubject("Registration Successful");
+            MimeMessageHelper helper= new MimeMessageHelper(message,MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            Template template = configuration.getTemplate("emailRegistration.html");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template,model);
+            helper.setTo(email);
+            helper.setText(html,true);
+            helper.setSubject("Successful Registration");
+            helper.setFrom("ceramicsheaven2023@gmail.com");
             mailSender.send(message);
 
-        } catch (MailException e) {
-            e.printStackTrace();
+        } catch (MessagingException | IOException | TemplateException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -53,9 +57,9 @@ public class EmailServiceImplementation implements EmailService{
     }
 
     @Override
-    public void order(String fullName, String email, Long orderId,LocalDateTime orderDate, LocalDateTime deliveryDate, Double totalPrice, Integer discount, String paymentMethod,String paymentStatus, Address address) {
+    public void order(String fullName, String email, Long orderId,LocalDateTime orderDate, LocalDateTime deliveryDate, Integer totalPrice, Integer discount, String paymentMethod,String paymentStatus, Address address) {
         MimeMessage message = mailSender.createMimeMessage();
-        Double price = totalPrice-50;
+        Integer price = totalPrice-50;
         Integer shippingCharges = 50;
         String orderDay = orderDate.getDayOfWeek().toString();
         String orderMonth = orderDate.getMonth().toString();

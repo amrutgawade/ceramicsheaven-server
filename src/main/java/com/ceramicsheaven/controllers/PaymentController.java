@@ -97,7 +97,7 @@ public class PaymentController {
 
             cartItemService.updateProductsQuantity(user.getId());
             String fullName = user.getFirstName()+" "+user.getLastName();
-            emailService.order(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
+            emailService.order(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalDiscountedPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
             cartRepository.deleteAll();
             cartService.CreateCart(user);
 

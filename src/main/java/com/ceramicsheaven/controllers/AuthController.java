@@ -90,7 +90,7 @@ public class AuthController {
 
         authResponse.setMessage("Signup Successfully");
         String fullName = user.getFirstName() + " "+ user.getLastName();
-        emailService.registrationEmail(email,fullName);
+        emailService.registrationEmail(email);
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
     }
     @PostMapping("/signin")

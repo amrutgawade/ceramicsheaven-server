@@ -53,19 +53,6 @@ public class CartServiceImplementation implements CartService{
 			cartItem.setQuantity(req.getQuantity());
 			cartItem.setUserId(userId);
 
-//			String[] dimensions = req.getSize().split("X");
-//			if (dimensions.length != 2) {
-//				throw new ProductException("Invalid size format");
-//			}
-//			int width = Integer.parseInt(dimensions[0].trim());
-//			int height = Integer.parseInt(dimensions[1].trim());
-//
-//			for (Size size : product.getSizes()) {
-//				if (size.getWidth() == width && size.getHeight() == height) {
-//					size.setQuantity(size.getQuantity() - req.getQuantity());
-//				}
-//			}
-
 			Integer price = req.getQuantity()*product.getPrice();
 			System.out.println(price);
 			cartItem.setPrice(price);
@@ -104,10 +91,10 @@ public class CartServiceImplementation implements CartService{
 		}
 
 
-		cart.setTotalDiscountedPrice(totalDiscountedPrice);
+		cart.setTotalDiscountedPrice(totalDiscountedPrice+50);
 		cart.setTotalItem(totalItems);
 		cart.setDiscount(totalPrice-totalDiscountedPrice);
-		cart.setTotalPrice(totalPrice+50);
+		cart.setTotalPrice(totalPrice);
 
 
 

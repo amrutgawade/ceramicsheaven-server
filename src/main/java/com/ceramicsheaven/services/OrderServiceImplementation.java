@@ -90,7 +90,6 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order findOrderById(Long orderId) throws OrderException {
 		Optional<Order> order = orderRepository.findById(orderId);
-
 		if (order.isPresent())
 			return order.get();
 		throw new OrderException("Order does not exists");
