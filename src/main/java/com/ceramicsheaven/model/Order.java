@@ -23,7 +23,7 @@ public class Order {
 	 private LocalDateTime orderDate;
 	 private LocalDateTime deliveryDate;
 
-	 @OneToOne
+	 @OneToOne(cascade = CascadeType.ALL)
 	 private Address shippingAddresses;
 
 	 @Embedded

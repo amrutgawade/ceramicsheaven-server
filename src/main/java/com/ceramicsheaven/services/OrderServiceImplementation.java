@@ -41,10 +41,6 @@ public class OrderServiceImplementation implements OrderService{
 	@Override
 	public Order createOrder(User user, Address shippingAddress) {
 		LocalDateTime localDateTime = LocalDateTime.now();
-		shippingAddress.setUser(user);
-		Address address = addressRepository.save(shippingAddress);
-		user.getAddress().add(address);
-		userRepository.save(user);
 
 		Cart cart = cartService.findUserCart(user.getId());
 		List<OrderItem> orderItems = new ArrayList<>();
@@ -73,7 +69,7 @@ public class OrderServiceImplementation implements OrderService{
 		createdOrder.setTotalDiscountedPrice(cart.getTotalDiscountedPrice());
 		createdOrder.setTotalItem(orderItems.size());
 		createdOrder.setDiscount(cart.getDiscount());
-		createdOrder.setShippingAddresses(address);
+		createdOrder.setShippingAddresses(shippingAddress);
 		createdOrder.setOrderDate(localDateTime);
 		createdOrder.setDeliveryDate(localDateTime.plusDays(7));
 		createdOrder.setOrderStatus("PENDING");
