@@ -66,6 +66,11 @@ public class AdminOrderController {
 		apiResponse.setStatus(true);
 		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/totalSales")
+	public ResponseEntity<Long> getTotalSales(){
+		Long totalSales = orderService.getTotalSales();
+		return  new ResponseEntity<Long>(totalSales,HttpStatus.OK);
+	}
 	
 }

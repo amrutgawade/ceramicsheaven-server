@@ -173,4 +173,17 @@ public class OrderServiceImplementation implements OrderService{
 
 	}
 
+	@Override
+	public Long getTotalSales() {
+		List<Order> orders = orderRepository.findAll();
+		Long totalSales = 0L;
+		for(Order order : orders){
+			String status = order.getOrderStatus();
+			if (status.equals("DELIVERED")){
+				totalSales = totalSales +order.getTotalDiscountedPrice();
+			}
+		}
+		return totalSales;
+	}
+
 }
