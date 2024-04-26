@@ -6,6 +6,7 @@ import com.ceramicsheaven.repositories.CategoryRepository;
 import com.ceramicsheaven.repositories.ProductRepository;
 import com.ceramicsheaven.requests.ProductRequest;
 import com.ceramicsheaven.model.Category;
+import com.ceramicsheaven.requests.ProductUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -81,15 +82,15 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, Product product) throws ProductException {
+    public Product updateProduct(Long productId, ProductUpdateRequest product) throws ProductException {
         Product existingProduct = productRepository.findById(productId).orElse(null);
         if (existingProduct==null)
             throw new ProductException("Product is not available for id "+productId);
 
-        Category category = categoryRepository.findByCategoryName(product.getCategory().getCategoryName());
+        Category category = categoryRepository.findByCategoryName(product.getCategoryName());
 
         if (category==null){
-            throw new ProductException(product.getCategory().getCategoryName()+" category is not available");
+            throw new ProductException(product.getCategoryName()+" category is not available");
         }
 
         if (product.getQuantity()<0){
@@ -105,7 +106,7 @@ public class ProductServiceImplementation implements ProductService {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setSizes(product.getSizes());
         existingProduct.setQuantity(product.getQuantity());
-        existingProduct.setCategory(product.getCategory());
+        existingProduct.setCategory(category);
         existingProduct.setQuantity(product.getQuantity());
         return productRepository.save(existingProduct);
     }

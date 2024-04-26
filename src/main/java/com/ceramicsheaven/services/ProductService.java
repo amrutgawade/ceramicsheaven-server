@@ -3,6 +3,7 @@ package com.ceramicsheaven.services;
 import com.ceramicsheaven.exceptions.ProductException;
 import com.ceramicsheaven.model.Product;
 import com.ceramicsheaven.requests.ProductRequest;
+import com.ceramicsheaven.requests.ProductUpdateRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ProductService {
     public Product createProduct(ProductRequest req) throws ProductException;
     public String deleteProduct(Long productId) throws ProductException;
 
-    public Product updateProduct(Long productId, Product product) throws ProductException;
+    public Product updateProduct(Long productId, ProductUpdateRequest product) throws ProductException;
 
     public Product findProductById(Long productId) throws ProductException;
 
