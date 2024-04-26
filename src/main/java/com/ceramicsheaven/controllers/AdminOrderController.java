@@ -2,6 +2,7 @@ package com.ceramicsheaven.controllers;
 
 import com.ceramicsheaven.exceptions.OrderException;
 import com.ceramicsheaven.model.Order;
+import com.ceramicsheaven.responses.AdminOrdersAndUsers;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +68,6 @@ public class AdminOrderController {
 		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 	}
 
-	@GetMapping("/totalSales")
-	public ResponseEntity<Long> getTotalSales(){
-		Long totalSales = orderService.getTotalSales();
-		return  new ResponseEntity<Long>(totalSales,HttpStatus.OK);
-	}
+
 	
 }

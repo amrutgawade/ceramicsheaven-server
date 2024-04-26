@@ -7,6 +7,7 @@ import com.ceramicsheaven.repositories.OrderItemRepository;
 import com.ceramicsheaven.repositories.OrderRepository;
 import com.ceramicsheaven.repositories.UserRepository;
 import com.ceramicsheaven.exceptions.OrderException;
+import com.ceramicsheaven.responses.AdminOrdersAndUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -174,7 +175,7 @@ public class OrderServiceImplementation implements OrderService{
 	}
 
 	@Override
-	public Long getTotalSales() {
+	public AdminOrdersAndUsers getTotalData() {
 		List<Order> orders = orderRepository.findAll();
 		Long totalSales = 0L;
 		for(Order order : orders){
@@ -183,7 +184,16 @@ public class OrderServiceImplementation implements OrderService{
 				totalSales = totalSales +order.getTotalDiscountedPrice();
 			}
 		}
-		return totalSales;
+
+		Long userCount = userRepository.count();
+		Long pendingOrders = orderRepository.pendingOrders();
+
+		AdminOrdersAndUsers adminOrdersAndUsers = new AdminOrdersAndUsers();
+		adminOrdersAndUsers.setTotalSales(totalSales);
+		adminOrdersAndUsers.setTotalUsers(userCount);
+		adminOrdersAndUsers.setPendingOrders(pendingOrders);
+
+		return adminOrdersAndUsers;
 	}
 
 }

@@ -4,6 +4,7 @@ import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.exceptions.OrderException;
 import com.ceramicsheaven.model.Order;
+import com.ceramicsheaven.responses.AdminOrdersAndUsers;
 
 import java.util.List;
 
@@ -29,5 +30,5 @@ public interface OrderService {
 	
 	public void deleteOrder(Long orderId) throws OrderException;
 
-	public Long getTotalSales();
+	public AdminOrdersAndUsers getTotalData();
 }

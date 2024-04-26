@@ -1,9 +1,12 @@
 package com.ceramicsheaven.controllers;
 
 import com.ceramicsheaven.config.JwtProvider;
+import com.ceramicsheaven.model.Order;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.repositories.UserRepository;
+import com.ceramicsheaven.responses.AdminOrdersAndUsers;
 import com.ceramicsheaven.responses.ApiResponse;
+import com.ceramicsheaven.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +19,12 @@ import java.util.List;
 public class AdminUserController {
 
     private UserRepository userRepository;
+    private OrderService orderService;
 
     @Autowired
-    public AdminUserController(UserRepository userRepository) {
+    public AdminUserController(UserRepository userRepository, OrderService orderService) {
         this.userRepository = userRepository;
+        this.orderService = orderService;
 
     }
 
@@ -38,4 +43,10 @@ public class AdminUserController {
         response.setStatus(true);
         return new ResponseEntity<ApiResponse>(response,HttpStatus.ACCEPTED);
    }
+
+    @GetMapping("/totalData")
+    public ResponseEntity<AdminOrdersAndUsers> getTotalSales(){
+        AdminOrdersAndUsers data = orderService.getTotalData();
+        return  new ResponseEntity<AdminOrdersAndUsers>(data,HttpStatus.OK);
+    }
 }
