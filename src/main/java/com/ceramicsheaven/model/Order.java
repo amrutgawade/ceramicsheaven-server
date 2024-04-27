@@ -19,7 +19,7 @@ public class Order {
 	private List<OrderItem> orderItems = new ArrayList<>();
 	private LocalDateTime orderDate;
 	private LocalDateTime deliveryDate;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address shippingAddresses;
 	@Embedded
 	private PaymentDetails paymentDetails = new PaymentDetails();

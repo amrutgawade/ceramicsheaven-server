@@ -4,6 +4,7 @@ package com.ceramicsheaven.services;
 import com.ceramicsheaven.config.JwtProvider;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Address;
+import com.ceramicsheaven.model.Cart;
 import com.ceramicsheaven.model.User;
 import com.ceramicsheaven.repositories.AddressRepository;
 import com.ceramicsheaven.repositories.UserRepository;
@@ -119,6 +120,13 @@ public class UserServiceImplementation implements UserService{
 	public String removeAddress(String jwt, Long addressId) throws UserException {
 		addressRepository.deleteById(addressId);
 		return "Address Deleted Successfully";
+	}
+
+	@Override
+	public String deleteUser(Long userId) {
+//		User user = userRepository.findById(userId);
+//		Cart cart =
+		return null;
 	}
 
 

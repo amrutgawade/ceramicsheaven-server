@@ -22,4 +22,6 @@ public interface UserService {
     public List<Address> getAddress(String jwt)throws UserException;
 
     public String removeAddress(String jwt,Long addressId)throws UserException;
+
+    public String deleteUser(Long userId);
 }
