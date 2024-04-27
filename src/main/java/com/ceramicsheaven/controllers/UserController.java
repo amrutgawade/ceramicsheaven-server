@@ -3,6 +3,7 @@ package com.ceramicsheaven.controllers;
 import com.ceramicsheaven.exceptions.UserException;
 import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.repositories.AddressRepository;
 import com.ceramicsheaven.requests.UpdatePasswordRequest;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,6 +21,7 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+
 
 
 	@GetMapping("/profile")

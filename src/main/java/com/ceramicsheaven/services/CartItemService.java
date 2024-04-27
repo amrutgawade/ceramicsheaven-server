@@ -12,10 +12,6 @@ import java.util.List;
 
 public interface CartItemService {
 
-	public CartItems creaCartItems(CartItems cartItems);
-	
-//	public String updateCartItems(Long cartItemId,Integer quantity)throws CartItemException;
-
 	public String incrementQuantity(Long cartItemId)throws CartItemException, ProductException;
 	public String decrementQuantity(Long cartItemId)throws CartItemException,ProductException;
 	

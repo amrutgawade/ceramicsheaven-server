@@ -7,7 +7,6 @@ public class AuthResponse {
 
     public AuthResponse() {
     }
-
     public AuthResponse(String jwt, String message) {
         this.jwt = jwt;
         this.message = message;

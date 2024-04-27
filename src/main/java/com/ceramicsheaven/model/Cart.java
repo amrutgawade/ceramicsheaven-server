@@ -1,5 +1,6 @@
 package com.ceramicsheaven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -11,28 +12,21 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
-	
 	@OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
 	@Column(name = "cart_items")
 	private Set<CartItems> cartItems = new HashSet<>();
-	
 	@Column(name = "total_price")
 	private double totalPrice;
-	
 	@Column(name = "total_item")
 	private double totalItem;
-	
 	private Integer totalDiscountedPrice;
-	
 	private Integer discount;
 
 	public Cart() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Cart(User user, Set<CartItems> cartItems, double totalPrice, double totalItem,

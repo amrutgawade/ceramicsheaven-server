@@ -9,32 +9,30 @@ public class CartItems {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@ManyToOne
 	@JsonIgnore
 	private Cart cart;
-	
+
 	@ManyToOne
 	private Product product;
-	
+
 	private String size;
-	
+
 	private Integer quantity;
-	
+
 	private Integer price;
-	
+
 	private Integer discountedPrice;
-	
+
 	private Long userId;
 
 	public CartItems() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public CartItems(Cart cart, Product product, String size, Integer quantity, Integer price,
-			Integer discountedPrice, Long userId) {
-
+	public CartItems(Long id, Cart cart, Product product, String size, Integer quantity, Integer price, Integer discountedPrice, Long userId) {
+		this.id = id;
 		this.cart = cart;
 		this.product = product;
 		this.size = size;
@@ -106,19 +104,5 @@ public class CartItems {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
-	}
-
-	@Override
-	public String toString() {
-		return "CartItems{" +
-				"id=" + id +
-				", cart=" + cart +
-				", product=" + product +
-				", size='" + size + '\'' +
-				", quantity=" + quantity +
-				", price=" + price +
-				", discountedPrice=" + discountedPrice +
-				", userId=" + userId +
-				'}';
 	}
 }

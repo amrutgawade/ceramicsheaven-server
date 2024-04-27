@@ -6,6 +6,7 @@ import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.Cart;
 import com.ceramicsheaven.model.Order;
 import com.ceramicsheaven.model.User;
+import com.ceramicsheaven.repositories.CartItemRepository;
 import com.ceramicsheaven.repositories.CartRepository;
 import com.ceramicsheaven.repositories.OrderRepository;
 import com.ceramicsheaven.responses.ApiResponse;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -30,41 +32,35 @@ public class PaymentController {
 
     @Value("${razorpay.api.key}")
     String apiKey;
-
     @Value("${razorpay.api.secret}")
     String apiSecret;
-
-    @Autowired
     private OrderService orderService;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
     private EmailService emailService;
-
-    @Autowired
     private CartRepository cartRepository;
-
-    @Autowired
     private CartItemService cartItemService;
+    private CartService cartService;
+    private CartItemRepository cartItemRepository;
 
     @Autowired
-    private CartService cartService;
+    public PaymentController( OrderService orderService, UserService userService, OrderRepository orderRepository, EmailService emailService, CartRepository cartRepository, CartItemService cartItemService, CartService cartService, CartItemRepository cartItemRepository) {
+        this.orderService = orderService;
+        this.userService = userService;
+        this.orderRepository = orderRepository;
+        this.emailService = emailService;
+        this.cartRepository = cartRepository;
+        this.cartItemService = cartItemService;
+        this.cartService = cartService;
+        this.cartItemRepository = cartItemRepository;
+    }
 
+    @Transactional
     @PostMapping("/payment/{paymentMethod}")
     public ResponseEntity<?> createPaymentLink(@RequestBody Address shippingAddress,@PathVariable String paymentMethod, @RequestHeader("Authorization") String jwt) throws RazorpayException, UserException, ProductException {
         if (paymentMethod.equals("CASH_ON_DELIVERY")){
             User user = userService.findUserProfileByJwt(jwt);
             Order order = orderService.createOrder(user, shippingAddress);
-
-            order.getPaymentDetails().setPaymentMethod(paymentMethod);
-            order.getPaymentDetails().setPaymentStatus("PENDING");
-            order.setOrderStatus("PLACED");
-            orderRepository.save(order);
 
             String orderDay = order.getOrderDate().getDayOfWeek().toString();
             String orderMonth = order.getOrderDate().getMonth().toString();
@@ -98,12 +94,11 @@ public class PaymentController {
             cartItemService.updateProductsQuantity(user.getId());
             String fullName = user.getFirstName()+" "+user.getLastName();
             emailService.order(fullName,user.getEmail(),order.getId(),order.getOrderDate(),order.getDeliveryDate(),order.getTotalDiscountedPrice(),order.getDiscount(),paymentResponse.getPaymentMethod(),paymentResponse.getPaymentStatus(),paymentResponse.getShippingAddress());
-            cartRepository.deleteAll();
-            cartService.CreateCart(user);
 
-//            ApiResponse apiResponse = new ApiResponse();
-//            apiResponse.setMessage("Your Order get placed");
-//            apiResponse.setStatus(true);
+            Long id = user.getId();
+            cartItemRepository.deleteCartItemsByUserId(id);
+//            cartRepository.deleteCartByUserId(id);
+//            cartService.CreateCart(user);
             return new ResponseEntity<>(paymentResponse,HttpStatus.CREATED);
         }
          {

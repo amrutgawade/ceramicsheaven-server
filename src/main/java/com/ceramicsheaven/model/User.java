@@ -19,7 +19,7 @@ public class User {
     private String mobile;
     private String password;
     private String role;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Address> address = new ArrayList<>();
 
     @Embedded
@@ -27,16 +27,14 @@ public class User {
     @CollectionTable(name = "payment_information", joinColumns = @JoinColumn(name = "user_id"))
     private List<PaymentInformation> paymentInformations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
-
     private LocalDateTime createdAt;
-
     public User() {
     }
 
@@ -158,24 +156,5 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", address=" + address +
-                ", paymentInformations=" + paymentInformations +
-                ", ratings=" + ratings +
-                ", reviews=" + reviews +
-                ", createdAt=" + createdAt +
-                '}';
     }
 }

@@ -14,7 +14,6 @@ import java.util.Set;
 
 public class ProductUpdateRequest {
 
-
     private String title;
 
     private String discription;

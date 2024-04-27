@@ -4,13 +4,16 @@ import com.ceramicsheaven.model.Address;
 import com.ceramicsheaven.model.CartItems;
 import com.ceramicsheaven.model.Order;
 import com.ceramicsheaven.model.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class PaymentResponse {
    private Long orderId;
-   private List<OrderItem> orderItems;
+   private List<OrderItem> orderItems = new ArrayList<>();
    private String orderDate;
    private String deliveryDate;
    private Address shippingAddress;

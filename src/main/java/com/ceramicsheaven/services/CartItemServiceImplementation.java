@@ -30,32 +30,6 @@ public class CartItemServiceImplementation implements CartItemService{
 		this.productService = productService;
 	}
 
-
-
-
-
-	@Override
-	public CartItems creaCartItems(CartItems cartItems) {
-//		cartItems.setQuantity(1);
-//		cartItems.setPrice(cartItems.getProduct().getPrice()*cartItems.getQuantity());
-//		cartItems.setDiscountedPrice(cartItems.getProduct().getDiscountedPrice()*cartItems.getQuantity());
-		
-		CartItems createdCartItem = cartItemRepository.save(cartItems);
-		
-		return createdCartItem;
-	}
-
-//	@Override
-//	public String updateCartItems(Long cartItemId, Integer quantity)throws CartItemException {
-//		CartItems item = findCartItemById(cartItemId);
-//		User user = userService.findById(item.getId());
-//		item.setQuantity(quantity);
-//		item.setPrice(quantity*item.getProduct().getPrice());
-//		item.setDiscountedPrice(item.getProduct().getDiscountedPrice()*item.getQuantity());
-//		cartItemRepository.save(item);
-//		return "updated Successfully";
-//	}
-
 	@Override
 	public String incrementQuantity(Long cartItemId) throws CartItemException, ProductException {
 		String res = null;

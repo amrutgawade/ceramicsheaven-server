@@ -2,10 +2,7 @@ package com.ceramicsheaven.services;
 
 
 import com.ceramicsheaven.model.*;
-import com.ceramicsheaven.repositories.AddressRepository;
-import com.ceramicsheaven.repositories.OrderItemRepository;
-import com.ceramicsheaven.repositories.OrderRepository;
-import com.ceramicsheaven.repositories.UserRepository;
+import com.ceramicsheaven.repositories.*;
 import com.ceramicsheaven.exceptions.OrderException;
 import com.ceramicsheaven.responses.AdminOrdersAndUsers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +24,22 @@ public class OrderServiceImplementation implements OrderService{
 
 	private OrderItemRepository orderItemRepository;
 
+	private ProductRepository productRepository;
+
 	@Autowired
-	public OrderServiceImplementation(OrderRepository orderRepository, CartService cartService, AddressRepository addressRepository, UserRepository userRepository, OrderItemRepository orderItemRepository) {
+	public OrderServiceImplementation(OrderRepository orderRepository, CartService cartService, AddressRepository addressRepository, UserRepository userRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
 		this.orderRepository = orderRepository;
 		this.cartService = cartService;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
-// this.orderItemService = orderItemService;
 		this.orderItemRepository = orderItemRepository;
+		this.productRepository = productRepository;
 	}
+
+
+
+
+
 
 
 
@@ -54,8 +58,6 @@ public class OrderServiceImplementation implements OrderService{
 			orderItem.setSize(cartItems.getSize());
 			orderItem.setUserId(cartItems.getUserId());
 			orderItem.setDiscountedPrice(cartItems.getDiscountedPrice());
-
-			orderItemRepository.save(orderItem);
 			orderItems.add(orderItem);
 		}
 
@@ -73,7 +75,7 @@ public class OrderServiceImplementation implements OrderService{
 		createdOrder.setShippingAddresses(shippingAddress);
 		createdOrder.setOrderDate(localDateTime);
 		createdOrder.setDeliveryDate(localDateTime.plusDays(7));
-		createdOrder.setOrderStatus("PENDING");
+		createdOrder.setOrderStatus("PLACED");
 		createdOrder.getPaymentDetails().setPaymentStatus("PENDING");
 		createdOrder.getPaymentDetails().setPaymentMethod("CASH_ON_DELIVERY");
 		createdOrder.setCreatedAt(LocalDateTime.now());
@@ -83,6 +85,13 @@ public class OrderServiceImplementation implements OrderService{
 			orderItem.setOrder(createdOrder);
 			orderItemRepository.save(orderItem);
 		}
+
+//		cartRepository.deleteById(cart.getId());
+
+		cart.setTotalPrice(0);
+		cart.setDiscount(0);
+		cart.setTotalDiscountedPrice(0);
+		cart.setTotalItem(0);
 		return createdOrder;
 	}
 
@@ -104,8 +113,7 @@ public class OrderServiceImplementation implements OrderService{
 
 	@Override
 	public List<Order> usersOrderHistory(Long userId) {
-		List<Order> orders = orderRepository.getUsersOrders(userId);
-		return orders;
+		return orderRepository.getUsersOrders(userId);
 	}
 
 	@Override
@@ -123,6 +131,7 @@ public class OrderServiceImplementation implements OrderService{
 			throw new OrderException("There is not available product");
 		}
 		order.setOrderStatus("CONFIRMED");
+		orderRepository.save(order);
 
 		return order;
 	}
@@ -134,6 +143,7 @@ public class OrderServiceImplementation implements OrderService{
 			throw new OrderException("There is not available product");
 		}
 		order.setOrderStatus("SHIPPED");
+		orderRepository.save(order);
 
 		return order;
 	}
@@ -145,6 +155,7 @@ public class OrderServiceImplementation implements OrderService{
 			throw new OrderException("There is not available product");
 		}
 		order.setOrderStatus("DELIVERED");
+		orderRepository.save(order);
 
 		return order;
 	}
@@ -156,6 +167,7 @@ public class OrderServiceImplementation implements OrderService{
             throw new OrderException("There is not available product");
 		}
 		order.setOrderStatus("CANCELLED");
+		orderRepository.save(order);
 		return order;
 	}
 
@@ -187,11 +199,13 @@ public class OrderServiceImplementation implements OrderService{
 
 		Long userCount = userRepository.count();
 		Long pendingOrders = orderRepository.pendingOrders();
+		Long totalProducts = productRepository.count();
 
 		AdminOrdersAndUsers adminOrdersAndUsers = new AdminOrdersAndUsers();
 		adminOrdersAndUsers.setTotalSales(totalSales);
 		adminOrdersAndUsers.setTotalUsers(userCount);
 		adminOrdersAndUsers.setPendingOrders(pendingOrders);
+		adminOrdersAndUsers.setTotalProducts(totalProducts);
 
 		return adminOrdersAndUsers;
 	}

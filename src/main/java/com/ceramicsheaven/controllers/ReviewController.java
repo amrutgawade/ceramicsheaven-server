@@ -17,13 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {
+	private UserService userService;
+	private ReviewService reviewService;
 
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private ReviewService reviewService;
-	
+	public ReviewController(UserService userService, ReviewService reviewService) {
+		this.userService = userService;
+		this.reviewService = reviewService;
+	}
+
 	@PostMapping("/create")
 	public ResponseEntity<Review> CreateReview(@RequestBody ReviewRequest request, @RequestHeader("Authorization") String jwt)throws UserException, ProductException {
 		

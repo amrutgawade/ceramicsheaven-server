@@ -19,12 +19,15 @@ import java.util.*;
 @RequestMapping("/api/cart")
 @RestController
 public class CartController {
-	
-	@Autowired
+
 	private CartService cartService;
-	@Autowired
 	private UserService userService;
 
+	@Autowired
+	public CartController(CartService cartService, UserService userService) {
+		this.cartService = cartService;
+		this.userService = userService;
+	}
 
 	@GetMapping("/")
 	public ResponseEntity<Cart> findUserCart(@RequestHeader("Authorization") String jwt) throws UserException {

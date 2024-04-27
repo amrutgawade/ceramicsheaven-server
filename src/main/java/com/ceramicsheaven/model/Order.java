@@ -1,5 +1,6 @@
 package com.ceramicsheaven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -9,31 +10,25 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order {
-	
-	 @Id
-//	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
 
-	 @ManyToOne(cascade = CascadeType.ALL)
-	 private User user;
-
-	 @OneToMany(mappedBy = "order", cascade = CascadeType.ALL,orphanRemoval = true)
-	 private List<OrderItem> orderItems = new ArrayList<>();
-
-	 private LocalDateTime orderDate;
-	 private LocalDateTime deliveryDate;
-
-	 @OneToOne(cascade = CascadeType.ALL)
-	 private Address shippingAddresses;
-
-	 @Embedded
-	 private PaymentDetails paymentDetails = new PaymentDetails();
-	 private Double totalPrice;
-	 private Integer totalDiscountedPrice;
-	 private Integer discount;
-	 private String orderStatus;
-	 private Integer totalItem;
-	 private LocalDateTime createdAt;
+	@Id
+	private Long id;
+	@ManyToOne
+	private User user;
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<OrderItem> orderItems = new ArrayList<>();
+	private LocalDateTime orderDate;
+	private LocalDateTime deliveryDate;
+	@OneToOne
+	private Address shippingAddresses;
+	@Embedded
+	private PaymentDetails paymentDetails = new PaymentDetails();
+	private Double totalPrice;
+	private Integer totalDiscountedPrice;
+	private Integer discount;
+	private String orderStatus;
+	private Integer totalItem;
+	private LocalDateTime createdAt;
 
 	public Order() {
 	}
@@ -165,7 +160,6 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order{" +
-				"id=" + id +
 				", user=" + user +
 				", orderItems=" + orderItems +
 				", orderDate=" + orderDate +

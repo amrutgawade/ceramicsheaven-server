@@ -7,7 +7,6 @@ public class ReviewRequest {
 	
 	public ReviewRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public ReviewRequest(Long productId, String review) {
 		super();

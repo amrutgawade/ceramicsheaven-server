@@ -15,8 +15,8 @@ public class ProductRequest {
     private Integer qtyPerBox;
     private String brand;
     private String color;
-    private Integer thickness;
-    private Integer waterAbsorption;
+//    private Integer thickness;
+//    private Integer waterAbsorption;
     private Set<Size> sizes = new HashSet<>();
     private String imageUrl;
     private String categoryName;
@@ -25,7 +25,7 @@ public class ProductRequest {
     public ProductRequest() {
     }
 
-    public ProductRequest(String title, String description, Integer price, Integer discountPrice, Integer discountPercent, Integer qtyPerBox, String brand, String color, Integer thickness, Integer waterAbsorption, Set<Size> sizes, String imageUrl, String categoryName, LocalDateTime createdAt) {
+    public ProductRequest(String title, String description, Integer price, Integer discountPrice, Integer discountPercent, Integer qtyPerBox, String brand, String color, Set<Size> sizes, String imageUrl, String categoryName, LocalDateTime createdAt) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -34,8 +34,8 @@ public class ProductRequest {
         this.qtyPerBox = qtyPerBox;
         this.brand = brand;
         this.color = color;
-        this.thickness = thickness;
-        this.waterAbsorption = waterAbsorption;
+//        this.thickness = thickness;
+//        this.waterAbsorption = waterAbsorption;
         this.sizes = sizes;
         this.imageUrl = imageUrl;
         this.categoryName = categoryName;
@@ -106,21 +106,21 @@ public class ProductRequest {
         this.color = color;
     }
 
-    public Integer getThickness() {
-        return thickness;
-    }
-
-    public void setThickness(Integer thickness) {
-        this.thickness = thickness;
-    }
-
-    public Integer getWaterAbsorption() {
-        return waterAbsorption;
-    }
-
-    public void setWaterAbsorption(Integer waterAbsorption) {
-        this.waterAbsorption = waterAbsorption;
-    }
+//    public Integer getThickness() {
+//        return thickness;
+//    }
+//
+//    public void setThickness(Integer thickness) {
+//        this.thickness = thickness;
+//    }
+//
+//    public Integer getWaterAbsorption() {
+//        return waterAbsorption;
+//    }
+//
+//    public void setWaterAbsorption(Integer waterAbsorption) {
+//        this.waterAbsorption = waterAbsorption;
+//    }
 
     public Set<Size> getSizes() {
         return sizes;
@@ -165,8 +165,8 @@ public class ProductRequest {
                 ", qtyPerBox=" + qtyPerBox +
                 ", brand='" + brand + '\'' +
                 ", color='" + color + '\'' +
-                ", thickness=" + thickness +
-                ", waterAbsorption=" + waterAbsorption +
+//                ", thickness=" + thickness +
+//                ", waterAbsorption=" + waterAbsorption +
                 ", sizes=" + sizes +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", categoryName='" + categoryName + '\'' +

@@ -6,7 +6,6 @@ public class RatingRequest {
 	private Double rating;
 	public RatingRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public RatingRequest(Long productId, Double rating) {
 		super();

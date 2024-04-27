@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -72,6 +74,7 @@ public class AuthController {
         createUser.setLastName(lastName);
         createUser.setMobile(mobile);
         createUser.setGender(gender);
+        createUser.setCreatedAt(LocalDateTime.now());
         createUser.setRole("USER");
 
         User savedUser = userRepository.save(createUser);

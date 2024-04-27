@@ -17,13 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ratings")
 public class RatingController {
+	private UserService userService;
+	private RatingService ratingService;
 
 	@Autowired
-	private UserService userService;
-	
-	@Autowired
-	private RatingService ratingService;
-	
+	public RatingController(UserService userService, RatingService ratingService) {
+		this.userService = userService;
+		this.ratingService = ratingService;
+	}
+
 	@PostMapping("/create")
 	public ResponseEntity<Rating> createRating(@RequestBody RatingRequest ratingRequest, @RequestHeader("Authorization") String jwt)throws UserException, ProductException {
 		User user = userService.findUserProfileByJwt(jwt);

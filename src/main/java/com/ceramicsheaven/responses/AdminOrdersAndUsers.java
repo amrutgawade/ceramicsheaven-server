@@ -5,13 +5,15 @@ public class AdminOrdersAndUsers {
     private Long pendingOrders;
     private Long totalUsers;
 
+    private Long totalProducts;
+
     public AdminOrdersAndUsers() {
     }
-
-    public AdminOrdersAndUsers(Long totalSales, Long pendingOrders, Long totalUsers) {
+    public AdminOrdersAndUsers(Long totalSales, Long pendingOrders, Long totalUsers, Long totalProducts) {
         this.totalSales = totalSales;
         this.pendingOrders = pendingOrders;
         this.totalUsers = totalUsers;
+        this.totalProducts = totalProducts;
     }
 
     public Long getTotalSales() {
@@ -36,5 +38,13 @@ public class AdminOrdersAndUsers {
 
     public void setTotalUsers(Long totalUsers) {
         this.totalUsers = totalUsers;
+    }
+
+    public Long getTotalProducts() {
+        return totalProducts;
+    }
+
+    public void setTotalProducts(Long totalProducts) {
+        this.totalProducts = totalProducts;
     }
 }

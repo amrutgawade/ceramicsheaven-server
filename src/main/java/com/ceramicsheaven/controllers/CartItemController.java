@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/cart_item")
 public class CartItemController {
 
-    @Autowired
     private CartItemService cartItemService;
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public CartItemController(CartItemService cartItemService, UserService userService) {
+        this.cartItemService = cartItemService;
+        this.userService = userService;
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable Long id, @RequestHeader("Authorization") String jwt) throws UserException, ProductException, CartItemException {

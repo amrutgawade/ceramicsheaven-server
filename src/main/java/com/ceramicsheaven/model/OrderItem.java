@@ -8,31 +8,22 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@JsonIgnore
 	@ManyToOne
 	private Order order;
-
-
 	@ManyToOne
 	private Product product;
-	
 	private String size;
-	
 	private Integer quantity;
-	
 	private Integer price;
-	
 	private Integer discountedPrice;
-	
 	private Long userId;
-	
 	private LocalDateTime deliveryDate;
-
 	public OrderItem() {
 	}
 

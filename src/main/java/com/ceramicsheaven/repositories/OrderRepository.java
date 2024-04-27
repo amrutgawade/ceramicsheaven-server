@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-
 public interface OrderRepository extends JpaRepository<Order,Long> {
-    @Query("SELECT o FROM Order o WHERE o.user.id = :userId AND (o.orderStatus = 'PLACED' OR o.orderStatus = 'CONFIRMED' OR o.orderStatus = 'SHIPPED' OR o.orderStatus = 'DELIVERED')")
-    public List<Order> getUsersOrders(@Param("userId") Long userId);
+    @Query("SELECT o FROM Order o WHERE o.user.id = :userId")
+    List<Order> getUsersOrders(@Param("userId") Long userId);
 
-    @Query("SELECT COUNT(*) FROM Order o WHERE (o.orderStatus = 'PLACED' OR o.orderStatus = 'CONFIRMED' OR o.orderStatus = 'SHIPPED')")
-    public Long pendingOrders();
+    @Query("SELECT COUNT(*) FROM Order o WHERE o.orderStatus IN ('PLACED', 'CONFIRMED', 'SHIPPED')")
+    Long pendingOrders();
+
 
 
 }

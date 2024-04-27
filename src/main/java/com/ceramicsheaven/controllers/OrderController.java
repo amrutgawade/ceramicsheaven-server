@@ -18,13 +18,17 @@ import java.util.List;
 @RestController
 public class OrderController {
 
-	@Autowired
+
 	private OrderService orderService;
-	
-	@Autowired
 	private UserService userService;
-	
-//	@PostMapping("/")
+
+	@Autowired
+	public OrderController(OrderService orderService, UserService userService) {
+		this.orderService = orderService;
+		this.userService = userService;
+	}
+
+	//	@PostMapping("/")
 //	public ResponseEntity<Order> createOrder(@RequestBody Address shippingAddress, @RequestHeader("Authorization") String jwt)throws UserException {
 //		User user = userService.findUserProfileByJwt(jwt);
 //
@@ -39,7 +43,6 @@ public class OrderController {
 		User user = userService.findUserProfileByJwt(jwt);
 		
 		List<Order> orders = orderService.usersOrderHistory(user.getId());
-		
 		return new ResponseEntity<List<Order>>(orders,HttpStatus.CREATED);
 	}
 	

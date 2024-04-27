@@ -1,5 +1,6 @@
 package com.ceramicsheaven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,74 +11,68 @@ import java.util.Set;
 
 @Entity
 public class Product {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "product_id")
 	private Long id;
-	
+
 	@Column(name = "title")
 	private String title;
-	
+
 	@Column(name = "discription")
 	private String discription;
-	
+
 	@Column(name = "price")
 	private Integer price;
-	
+
 	@Column(name = "discounted_price")
 	private Integer discountedPrice;
-	
+
 	@Column(name = "discounted_percent")
 	private Integer discountedPercent;
-	
+
 	@Column(name = "quantity")
 	private Integer quantity;
-	
+
 	@Column(name = "brand")
 	private String brand;
-	
+
 	@Column(name = "color")
 	private String color;
 
 	@Column(name = "qty_per_box")
 	private Integer qtyPerBox;
 
-	@Column(name = "thickness")
-	private Integer thickness;
-
-	@Column(name = "water_absorption")
-	private Integer waterAbsorption;
-
 	@Embedded
 	@ElementCollection
 	@CollectionTable(name = "product_size", joinColumns = @JoinColumn(name = "product_id"))
 	private Set<Size> sizes = new HashSet<>();
-	
+
 	@Column(name = "image_url")
 	private String imageUrl;
-	
+
 	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Rating> rating = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Review> review = new ArrayList<>();
-	
+
 	@Column(name = "num_rating")
 	private Integer numRating;
-	
+
 	@ManyToOne
 	@JoinColumn(name="category_id")
 	private Category category;
-	
+
 	private LocalDateTime createdAt;
+
 
 	public Product() {
 	}
 
-	public Product(String title, String discription, Integer price, Integer discountedPrice,
-                   Integer discountedPercent, Integer quantity, String brand, String color, Set<Size> sizes, String imageUrl,
-                   List<Rating> rating, List<Review> review, Integer numRating, Category category, LocalDateTime createdAt) {
+	public Product(Long id, String title, String discription, Integer price, Integer discountedPrice, Integer discountedPercent, Integer quantity, String brand, String color, Integer qtyPerBox, Set<Size> sizes, String imageUrl, List<Rating> rating, List<Review> review, Integer numRating, Category category, LocalDateTime createdAt) {
+		this.id = id;
 		this.title = title;
 		this.discription = discription;
 		this.price = price;
@@ -86,6 +81,7 @@ public class Product {
 		this.quantity = quantity;
 		this.brand = brand;
 		this.color = color;
+		this.qtyPerBox = qtyPerBox;
 		this.sizes = sizes;
 		this.imageUrl = imageUrl;
 		this.rating = rating;
@@ -167,6 +163,14 @@ public class Product {
 		this.color = color;
 	}
 
+	public Integer getQtyPerBox() {
+		return qtyPerBox;
+	}
+
+	public void setQtyPerBox(Integer qtyPerBox) {
+		this.qtyPerBox = qtyPerBox;
+	}
+
 	public Set<Size> getSizes() {
 		return sizes;
 	}
@@ -222,11 +226,4 @@ public class Product {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
-	
-	
-	
-	
-	
 }

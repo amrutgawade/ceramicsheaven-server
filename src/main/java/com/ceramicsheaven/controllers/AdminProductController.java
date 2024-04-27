@@ -6,6 +6,7 @@ import com.ceramicsheaven.requests.ProductUpdateRequest;
 import com.ceramicsheaven.responses.ApiResponse;
 import com.ceramicsheaven.services.ProductService;
 import com.ceramicsheaven.requests.ProductRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -22,8 +23,10 @@ import java.util.List;
 public class AdminProductController {
 
 
+
 	private ProductService productService;
 
+	@Autowired
 	public AdminProductController(ProductService productService) {
 		super();
 		this.productService = productService;
